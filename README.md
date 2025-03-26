@@ -1,1 +1,1 @@
-# MarketMinds
+# MarketMinds: AI-Powered Investment Research Crew
