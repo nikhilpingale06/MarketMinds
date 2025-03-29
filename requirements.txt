@@ -1,13 +1,8 @@
 crewai
-langchain
-openai
+ipykernel
+langchain_groq
 yfinance
-alpha_vantage
-newsapi-python
-fastapi
-streamlit
-scikit-learn
-tensorflow
 pandas
-numpy
 matplotlib
+langchain
+crewai_tools

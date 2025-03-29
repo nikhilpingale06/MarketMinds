@@ -1,1 +1,0 @@
-# LSTM-based Market Trend Prediction
