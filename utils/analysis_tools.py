@@ -1,13 +1,9 @@
-
 from crewai.tools import tool  
 from utils.data_fetcher import get_stock_data, get_risk_data
 from utils.technical_analysis import add_technical_indicators
-from typing import  Dict, Any
+from typing import Dict, Any
 import pandas as pd
-import os
 import requests
-
-SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 
 # Custom Tool for Market Analysis Agent
 @tool("StockAnalysisTool")
@@ -16,20 +12,16 @@ def stock_analysis_tool(symbol: str) -> dict:
     - 50/200-day SMAs 
     - 14-day RSI"""
     try:
-        # Get data 
         data = get_stock_data(symbol)  
-        
-        # Validate data
+
         if len(data) < 200:
             return {"error": f"Need 200 trading days (got {len(data)})"}
         if data.empty or "Close" not in data.columns:
             return {"error": "Invalid/missing price data"}
         
-        # Calculate indicators using function
         analyzed = add_technical_indicators(data.copy())
         latest = analyzed.iloc[-1]  
         
-        # Prepare results
         return {
             "symbol": symbol,
             "current_price": round(float(latest["Close"]), 2),
@@ -54,16 +46,16 @@ def stock_analysis_tool(symbol: str) -> dict:
     
 # Custom Tool for Sentiment Analysis Agent
 @tool("SerperSearchTool")
-def serper_search_tool(query: str) -> Dict[str, Any]:
+def serper_search_tool(query: str, api_key: str) -> Dict[str, Any]:
     """Searches the web using Serper API for the latest information.
     
     Args:
         query: The search query to look up
+        api_key: API Key for Serper Search
     """
     try:
-        api_key = SERPER_API_KEY
         if not api_key:
-            return {"error": "Serper API key not found"}
+            return {"error": "Serper API key not provided"}
             
         headers = {
             "X-API-KEY": api_key,
@@ -83,7 +75,6 @@ def serper_search_tool(query: str) -> Dict[str, Any]:
         
         search_results = response.json()
         
-        # results formatting
         formatted_results = {
             "query": query,
             "results": []
@@ -104,23 +95,21 @@ def serper_search_tool(query: str) -> Dict[str, Any]:
     
 
 
-# Custom Tool for Risk assesment Agent
+
+# Custom Tool for Risk Assessment Agent
 @tool("RiskAssessmentTool")
 def risk_assessment_tool(symbol: str) -> dict:
     """Calculates stock risk metrics from Alpha Vantage data."""
     try:
         risk_data = get_risk_data(symbol)
         
-        # Return API errors immediately
         if isinstance(risk_data, dict) and "error" in risk_data:
             return risk_data
             
-        # Convert to DataFrame and validate
         df = pd.DataFrame(risk_data).T
         if df.empty:
             return {"error": "No price data available"}
             
-        # Get close prices (handle different column names)
         close_col = next((col for col in ["4. close", "close", "Close"] if col in df), None)
         if not close_col:
             return {"error": "Could not find closing prices"}
@@ -129,7 +118,6 @@ def risk_assessment_tool(symbol: str) -> dict:
         if len(close_prices) < 2:  
             return {"error": "Insufficient data points"}
             
-        # Calculate metrics
         latest_close = round(float(close_prices.iloc[0]), 2)
         volatility = round(close_prices.pct_change().std(), 4)
         

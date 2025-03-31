@@ -6,3 +6,4 @@ pandas
 matplotlib
 langchain
 crewai_tools
+streamlit

@@ -1,8 +1,9 @@
 # Fetch financial data from APIs
 
+# Fetch financial data from APIs
+
 import yfinance as yf
 import requests
-from utils.api_keys import ALPHA_VANTAGE_API_KEY
 
 def get_stock_data(symbol, period="1y", interval="1d"):
     """Fetches historical stock data from Yahoo Finance."""
@@ -11,18 +12,20 @@ def get_stock_data(symbol, period="1y", interval="1d"):
     return data
 
 
-def get_risk_data(symbol):
+def get_risk_data(symbol, api_key, debug=False):
     """Fetches risk metrics and volatility data from Alpha Vantage."""
     url = "https://www.alphavantage.co/query"
     params = {
         "function": "TIME_SERIES_DAILY",
         "symbol": symbol,
-        "apikey": ALPHA_VANTAGE_API_KEY
+        "apikey": api_key  # uses dynamic API key
     }
     
     response = requests.get(url, params=params)
-    print(f"[DEBUG] Response Status: {response.status_code}")
-    print(f"[DEBUG] Raw API Response: {response.text}")  
+
+    if debug:
+        print(f"[DEBUG] Response Status: {response.status_code}")
+        print(f"[DEBUG] Raw API Response: {response.text}")  
 
     data = response.json()
     

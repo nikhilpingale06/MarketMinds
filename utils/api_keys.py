@@ -1,13 +1,13 @@
-# Store API keys (Do not commit to GitHub)
-
+# Store API keys 
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# API Keys
-SERPER_API_KEY = os.getenv("SERPER_API_KEY")
-ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+# API Keys 
+SERPER_API_KEY = None  
+ALPHA_VANTAGE_API_KEY = None  
+GROQ_API_KEY = None  
 
-STOCK_SYMBOL = 'TSLA'  
+# Stock Symbol 
+STOCK_SYMBOL = None

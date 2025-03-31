@@ -16,7 +16,7 @@ def main():
     # Initialize LLMs
     groq_llm1 = LLM(model="groq/llama3-70b-8192", max_tokens=500)
     groq_llm2 = LLM(model="groq/gemma2-9b-it", max_tokens=700)
-    groq_llm3 = LLM(model="groq/llama-3.1-8b-instant", max_tokens=1000)
+    groq_llm3 = LLM(model="groq/deepseek-r1-distill-qwen-32b", max_tokens=00)
 
     # Create agents
     market_analyst = create_market_analyst(groq_llm1)

@@ -1,27 +1,27 @@
 from crewai import Task
-from utils.api_keys import STOCK_SYMBOL
 
-def create_market_analysis_task(agent):
+def create_market_analysis_task(agent, symbol):
     return Task(
-    description=f"Conduct complete technical analysis of {STOCK_SYMBOL}",
-    agent=agent,
-    expected_output="""Concise report containing:
-    1. Current price and key moving averages (50/200-day)
-    2. RSI value and interpretation
-    3. Basic trend classification"""
+        description=f"Conduct complete technical analysis of {symbol}",
+        agent=agent,
+        input_variables=["symbol"],
+        expected_output="""Concise report containing:
+        1. Current price and key moving averages (50/200-day)
+        2. RSI value and interpretation
+        3. Basic trend classification"""
     )
 
-
-def create_sentiment_task(agent):
+def create_sentiment_task(agent, symbol):
     return Task(
         description=f"""
-        Analyze sentiment for {STOCK_SYMBOL}'s stock from latest news headlines.
+        Analyze sentiment for {symbol}'s stock from latest news headlines.
         Use SerperSearchTool to find recent articles and provide a concise analysis.
         Include sentiment direction and key reason for the assessment.
         """,
         agent=agent,
+        input_variables=["symbol"],
         expected_output=f"""
-        {STOCK_SYMBOL} SENTIMENT: [Positive/Negative/Neutral]
+        {symbol} SENTIMENT: [Positive/Negative/Neutral]
         Strength: [Strong/Moderate/Weak]
         Key Point: [Brief reason in 10-15 words]
         Headline: "[Most significant recent headline]"
@@ -29,7 +29,7 @@ def create_sentiment_task(agent):
     )
 
 
-def create_risk_task(agent):
+def create_risk_task(agent, symbol):
     return Task(
         description="Fetch stock market data and risk assessment for the given stock symbol.",
         expected_output="A risk assessment report with stock price data and risk score.",
@@ -58,6 +58,5 @@ def create_report_task(agent):
         ),
         agent=agent
     )
-
 
 

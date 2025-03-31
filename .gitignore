@@ -1,3 +1,4 @@
 MarketMinds_env/
 .env/
 __pycache__/
+StreamlitUI_files/
